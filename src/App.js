@@ -17,7 +17,8 @@ class App extends Component {
           images:[],
           searchfield: '',
           filteredImages:[],
-          suggestedKeywords:[]
+          suggestedKeywords:[],
+          inputValue: ''
         }
         this.onKeywordChange = this.onKeywordChange.bind(this);
       }
@@ -105,6 +106,7 @@ class App extends Component {
 
       onSearchChange = (event) => {
         this.setState({searchfield: event.target.value});
+        this.setState({inputValue: event.target.value});
         let filteredImages = this.state.images.filter(image => {
           return image.labels.join("").includes(this.state.searchfield.toLowerCase());
         });
@@ -113,6 +115,7 @@ class App extends Component {
 
       onKeywordChange(name) {
         this.setState({searchfield: name});
+        this.setState({inputValue: name});
         let filteredImages = this.state.images.filter(image => {
           console.log(this.state.searchfield);
           return image.labels.join("").includes(name.toLowerCase());
@@ -132,7 +135,7 @@ class App extends Component {
             <React.Fragment>
             <Grid className="container-fluid header-grid">
               <Header>
-                <SearchBox searchChange={this.onSearchChange}/>
+                <SearchBox searchChange={this.onSearchChange} inputValue={this.state.inputValue} />
                 <KeywordList keywords={this.state.suggestedKeywords} keywordChange={this.onKeywordChange}/>
               </Header>
             </Grid>
