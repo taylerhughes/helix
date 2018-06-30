@@ -1,0 +1,15 @@
+.header {
+	background-color:#272727;
+	height:200px;
+}
+
+.search input {
+	background: none;
+    border: none;
+    font-size: 20px;
+    color: white;
+    position: absolute;
+    top: 80px;
+    left: 60px;
+    font-family: 'Roboto', sans-serif;
+}

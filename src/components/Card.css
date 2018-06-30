@@ -1,0 +1,40 @@
+.img-container {
+	width:100%;
+}
+
+.img-container img {
+	width:100%;
+	height:auto;
+}
+
+.card-box {
+    padding: 15px;
+    background-color: white;
+    border-radius: 4px;
+    margin: 0 0 20px 0;
+}
+
+.card-labels {
+    font-size: 14px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    text-align: center;
+    margin: 10px 0 0 0;
+    color: #9c9c9c;
+}
+
+.edit {
+    background-image:url('../utils/vignette.png');
+    width:82px;
+    height:82px;
+    position:absolute;
+    right:30px;
+}
+
+.edit img {
+    width:19px;
+    height:19px;
+    position: absolute;
+    right: 10px;
+    top:10px;
+}

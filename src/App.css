@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,500,700');
+
+*:focus {
+    outline: none;
+}
+
+.container-fluid {
+  max-width:none !important;
+}
+
+.header-grid {
+  padding: 0 !important;
+}
+
+body {
+	background-color: #ececec !important;
+}
+
+.card-container {
+	padding:40px 0;
+}
+
+.loading {
+    font-family: 'Roboto', sans-serif;
+    font-size:20px;
+    color:#bdbdbd;
+    text-align:center;
+    margin:100px 0 0 0;
+}
+
+.loading h1 {
+	font-size:20px;
+}
