@@ -8,6 +8,8 @@ import SearchBox from './components/SearchBox.js';
 import { Grid } from 'react-bootstrap';
 import Header from './components/Header.js';
 import KeywordList from './components/KeywordList.js';
+import { BrowserRouter, Route } from 'react-router-dom';
+import ImageEditor from './components/ImageEditor.js';
 
 class App extends Component {
 
@@ -146,9 +148,14 @@ class App extends Component {
                 <KeywordList keywords={this.state.suggestedKeywords} keywordChange={this.onKeywordChange}/>
               </Header>
             </Grid>
-            <Grid className="container-fluid">
-              <CardList images={this.state.filteredImages} />
-            </Grid>
+            <BrowserRouter>
+              <React.Fragment>
+                <Route exact 
+                path="/" 
+                render={(props) => <CardList images={this.state.filteredImages} {...props} />}/>
+                <Route path="/edit" component={ImageEditor} />
+              </React.Fragment>
+            </BrowserRouter>
             </React.Fragment>
           )}
       }

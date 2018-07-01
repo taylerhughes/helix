@@ -1,16 +1,19 @@
 import React from 'react';
 import Card from './Card';
-import { Row } from 'react-bootstrap';
+import { Grid, Row } from 'react-bootstrap';
 
 const CardList = ({images}) => {
 	if (images.length === 0) {
 		return (
+		<Grid className="container-fluid">
 			<div className="none-title">
 				<p>There are no images to display.</p>
 			</div>
+		</Grid>
 		);
 	} else {
 		return (
+		<Grid className="container-fluid">
 			<Row className="card-container">
 				{images.map((image, i) => {
 					return (
@@ -18,6 +21,7 @@ const CardList = ({images}) => {
 					);
 				})}
 			</Row>
+		</Grid>
 		)
 	}
 }

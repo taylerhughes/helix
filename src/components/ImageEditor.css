@@ -1,0 +1,13 @@
+#canvas-container {
+    background-color: #4c4c4c;
+    height: 100%;
+    position: relative;
+    min-height: 400px;
+}
+
+#mycanvas {
+	position: absolute;
+	left:50%;
+	top:50%;
+	transform: translate(-50%, -50%);
+}
