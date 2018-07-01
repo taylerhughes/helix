@@ -7,6 +7,7 @@ const Header = (props) => {
 		<Row className="header">
 			<Col xs={12} md={3} className="search">
 				{props.children[0]}
+        <a href="#" className="clear" onClick={() => props.onClear()}>Clear</a>
 			</Col>
 			{props.children[1]}
 		</Row>

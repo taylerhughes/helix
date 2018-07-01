@@ -21,6 +21,7 @@ class App extends Component {
           inputValue: ''
         }
         this.onKeywordChange = this.onKeywordChange.bind(this);
+        this.onClear = this.onClear.bind(this);
       }
 
       getLabels = (image) => {
@@ -117,9 +118,15 @@ class App extends Component {
         this.setState({searchfield: name});
         this.setState({inputValue: name});
         let filteredImages = this.state.images.filter(image => {
-          console.log(this.state.searchfield);
           return image.labels.join("").includes(name.toLowerCase());
         });
+        this.setState({filteredImages});
+      }
+
+      onClear() {
+        this.setState({searchfield: ''});
+        this.setState({inputValue: ''});
+        let filteredImages = this.state.images;
         this.setState({filteredImages});
       }
 
@@ -134,7 +141,7 @@ class App extends Component {
           return (
             <React.Fragment>
             <Grid className="container-fluid header-grid">
-              <Header>
+              <Header onClear={this.onClear}>
                 <SearchBox searchChange={this.onSearchChange} inputValue={this.state.inputValue} />
                 <KeywordList keywords={this.state.suggestedKeywords} keywordChange={this.onKeywordChange}/>
               </Header>

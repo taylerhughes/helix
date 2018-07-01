@@ -10,14 +10,10 @@ const KeywordList = ({keywords, keywordChange}) => {
 				<p>Suggested Keywords</p>
 			</Row>
 			<Row className="flex">{
-				if(keywords.length === 0) {
-					return <Col><div className="none"><p>There are none...</p></div></Col>;
-				} else {
 					keywords.map((keyword, i) => {
-						return <Keyword name={keyword[0]} count={keyword[1]} keywordChange={keywordChange}/>;
+						return <Keyword key={keyword[0]} name={keyword[0]} count={keyword[1]} keywordChange={keywordChange}/>;
 					})
 				}
-			}
 			</Row>
 		</Col>
 	);

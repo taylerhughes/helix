@@ -13,3 +13,13 @@
     left: 60px;
     font-family: 'Roboto', sans-serif;
 }
+
+.clear {
+    color:#e45959;
+    position: absolute;
+    top: 110px;
+    left: 60px;
+    font-size:12px;
+    font-family: 'Roboto', sans-serif;
+    opacity:0.5;
+}
