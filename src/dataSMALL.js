@@ -1,1 +1,0 @@
-export default { "imageFiles": ["interview-resources/office-images/1.jpg", "interview-resources/office-images/1200px-Channel_1_Israel_DSC0021.jpg"] };

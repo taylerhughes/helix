@@ -13,153 +13,147 @@ import ImageEditor from './components/ImageEditor.js';
 
 class App extends Component {
 
-      constructor() {
+    constructor() {
         super();
         this.state = {
-          images:[],
-          searchfield: '',
-          filteredImages:[],
-          suggestedKeywords:[],
-          inputValue: ''
+            images: [],
+            searchfield: '',
+            filteredImages: [],
+            suggestedKeywords: [],
+            inputValue: ''
         }
         this.onKeywordChange = this.onKeywordChange.bind(this);
         this.onClear = this.onClear.bind(this);
-      }
+    }
 
-      getLabels = (image) => {
+    getLabels = (image) => {
         const AuthKey = key.key;
         const res = axios.post(`https://vision.googleapis.com/v1/images:annotate?key=${AuthKey}`, {
-          requests: [
-            {
-              image:{
-                source:{
-                  imageUri: `http://storage.googleapis.com/${image}`
-                }
-              },
-              features:[
-                {
-                  type:"LABEL_DETECTION",
-                  maxResults:10
-                }
-              ]
-            }
-          ]
+            requests: [{
+                image: {
+                    source: {
+                        imageUri: `http://storage.googleapis.com/${image}`
+                    }
+                },
+                features: [{
+                    type: "LABEL_DETECTION",
+                    maxResults: 10
+                }]
+            }]
         });
 
         return res;
 
-      };
+    };
 
-      componentDidMount() {
+    componentDidMount() {
         const allKeywords = [];
         const keywordArray = ["whiteboard", "shoe", "desk", "window"]
         imageFiles.imageFiles.forEach(img => {
-          if (this.isImage(img)) {
-            this.getLabels(img).then(result => {
-              const results = result.data.responses[0].labelAnnotations;
-              let labels = [];
-              if (results) {
-                labels = results.map(result => {
-                  return result.description;
-                }); 
-                allKeywords.push(labels);
-              } else {
-                labels.push("No labels found.")
-              }
-              const suggestedKeywords = keywordArray.map(keyword => {
-                let count = 0;
-                allKeywords.forEach(arr => {
-                  arr.forEach(val => {
-                    if(val === keyword) {
-                      count++
+            if (this.isImage(img)) {
+                this.getLabels(img).then(result => {
+                    const results = result.data.responses[0].labelAnnotations;
+                    let labels = [];
+                    if (results) {
+                        labels = results.map(result => {
+                            return result.description;
+                        });
+                        allKeywords.push(labels);
+                    } else {
+                        labels.push("No labels found.")
                     }
-                  })
-                })
-              return [keyword, count]
-              })
+                    const suggestedKeywords = keywordArray.map(keyword => {
+                        let count = 0;
+                        allKeywords.forEach(arr => {
+                            arr.forEach(val => {
+                                if (val === keyword) {
+                                    count++
+                                }
+                            })
+                        })
+                        return [keyword, count]
+                    })
 
-              //Add image URI and labels to the state 
-              this.setState({images:[...this.state.images, {img, labels}]});
-              this.setState({filteredImages:[...this.state.filteredImages, {img, labels}]});
-              this.setState({suggestedKeywords:suggestedKeywords});
-            });
-          } else {
-            //do nothing
-          }
-          })
-      }
-
-      isImage = (filename) => {
-          var ext = this.getExtension(filename);
-          switch (ext.toLowerCase()) {
-          case 'jpg':
-          case 'gif':
-          case 'bmp':
-          case 'png':
-              //etc
-              return true;
-          }
-          return false;
-      }
-
-      getExtension = (filename) => {
-          var parts = filename.split('.');
-          return parts[parts.length - 1];
-      }
-
-      onSearchChange = (event) => {
-        this.setState({searchfield: event.target.value});
-        this.setState({inputValue: event.target.value});
-        let filteredImages = this.state.images.filter(image => {
-          return image.labels.join("").includes(this.state.searchfield.toLowerCase());
-        });
-        this.setState({filteredImages});
-      }
-
-      onKeywordChange(name) {
-        this.setState({searchfield: name});
-        this.setState({inputValue: name});
-        let filteredImages = this.state.images.filter(image => {
-          return image.labels.join("").includes(name.toLowerCase());
-        });
-        this.setState({filteredImages});
-      }
-
-      onClear() {
-        this.setState({searchfield: ''});
-        this.setState({inputValue: ''});
-        let filteredImages = this.state.images;
-        this.setState({filteredImages});
-      }
-
-      render() {
-        if (this.state.images.length === 0) {
-          return (
-            <div className="loading">
-              <h1>Loading...</h1>
-            </div>
-            )
-        } else {
-          return (
-            <React.Fragment>
-            <Grid className="container-fluid header-grid">
-              <Header onClear={this.onClear}>
-                <SearchBox searchChange={this.onSearchChange} inputValue={this.state.inputValue} />
-                <KeywordList keywords={this.state.suggestedKeywords} keywordChange={this.onKeywordChange}/>
-              </Header>
-            </Grid>
-            <BrowserRouter>
-              <React.Fragment>
-                <Route exact 
-                path="/" 
-                render={(props) => <CardList images={this.state.filteredImages} {...props} />}/>
-                <Route path="/edit" component={ImageEditor} />
-              </React.Fragment>
-            </BrowserRouter>
-            </React.Fragment>
-          )}
-      }
-
+                    //Add image URI and labels to the state 
+                    this.setState({ images: [...this.state.images, { img, labels }] });
+                    this.setState({ filteredImages: [...this.state.filteredImages, { img, labels }] });
+                    this.setState({ suggestedKeywords: suggestedKeywords });
+                });
+            }
+        })
     }
 
-    export default App;
+    isImage = (filename) => {
+        var ext = this.getExtension(filename);
+        switch (ext.toLowerCase()) {
+            case 'jpg':
+            case 'gif':
+            case 'bmp':
+            case 'png':
+                //etc
+                return true;
+        }
+        return false;
+    }
+
+    getExtension = (filename) => {
+        var parts = filename.split('.');
+        return parts[parts.length - 1];
+    }
+
+    //updating the filter when search field is used
+    onSearchChange = (event) => {
+        //update the search field visually
+        this.setState({ inputValue: event.target.value });
+        let filteredImages = this.state.images.filter(image => {
+            return image.labels.includes(event.target.value.toLowerCase());
+        });
+        this.setState({ filteredImages });
+    }
+
+    //updating the filter when a keyword is clicked
+    onKeywordChange(name) {
+        let filteredImages = this.state.images.filter(image => {
+            return image.labels.includes(name.toLowerCase());
+        });
+        this.setState({ filteredImages });
+    }
+
+    //clear the filter
+    onClear() {
+        this.setState({ inputValue: '' });
+        let filteredImages = this.state.images;
+        this.setState({ filteredImages });
+    }
+
+    render() {
+      if (this.state.images.length === 0) {
+        return (
+          <div className="loading">
+            <h1>Loading...</h1>
+          </div>
+          )
+      } else {
+        return (
+          <React.Fragment>
+          <Grid className="container-fluid header-grid">
+            <Header onClear={this.onClear}>
+              <SearchBox searchChange={this.onSearchChange} inputValue={this.state.inputValue} />
+              <KeywordList keywords={this.state.suggestedKeywords} keywordChange={this.onKeywordChange}/>
+            </Header>
+          </Grid>
+          <BrowserRouter>
+            <React.Fragment>
+              <Route exact 
+              path="/" 
+              render={(props) => <CardList images={this.state.filteredImages} {...props} />}/>
+              <Route path="/edit" component={ImageEditor} />
+            </React.Fragment>
+          </BrowserRouter>
+          </React.Fragment>
+        )}
+    }
+
+  }
+
+  export default App;
